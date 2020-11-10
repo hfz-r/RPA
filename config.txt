@@ -1,0 +1,24 @@
+emailReceiver=hafiz.roslan@hartalega.com.my;fikri.ismail@hartalega.com.my;s.vivekaanan@hartalega.com.my;
+emailSender=alert@hartalega.com.my
+isValidateHeader=true
+maxHeaderTries=3
+maxLineTries=2
+maxCustInstrucTries=2
+dbEnvironment=UAT
+dbConnection=Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=RPA_SOC;Data Source=HSD-SVR-0051-V
+failLog=log-fail.txt
+successLog=log-success.txt
+folderBase=csv
+folderSnapshot=Snapshot
+pathBase=D:\AA-RPA\Auto SO Creation\D365
+pathLog=D:\LOGS
+pathAssets=D:\assets
+pathTaskBot=Automation Anywhere\My Tasks\Workspace
+scArchive=Automation Anywhere\My Tasks\Workspace\Script\Archive.vbs
+scFileTransform=Automation Anywhere\My Tasks\Workspace\Script\FileTransform.vbs
+scFileCount=Automation Anywhere\My Tasks\Workspace\Script\FileCount.vbs
+scFlattenDate=Automation Anywhere\My Tasks\Workspace\Script\FlattenDate.vbs
+scRowColorSelector=Automation Anywhere\My Tasks\Workspace\Script\RowColorSelector.vbs
+scSOLineCount=Automation Anywhere\My Tasks\Workspace\Script\SOLineCount.vbs
+urlD365=https://ax-d365.hartalega.com.my/namespaces/AXSF/
+urlD365Auth=https://adfs.hartalega.com.my/adfs/oauth2/authorize/
