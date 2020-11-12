@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>soc-v2</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="introduction">Introduction</h1>
+<p>This document contains all essential information for the user to make full use of the Bot or Digital worker. This manual includes a description of the functions and capabilities and step-by-step procedures for setup &amp; configuration of the Bot.</p>
+<h2 id="overview">Overview</h2>
+<p>SOC-V2 is a successor to the SO-Creation Part 3 Bot, introduced more effective approach while working with ERP. This bot covered a limitation existed in the previous version as described by below table:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Previous</th>
+<th>Current</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>configurable</td>
+<td>hard-coded in variables</td>
+<td>“single source of truth” text-file config</td>
+</tr>
+<tr>
+<td>logging &amp; monitoring</td>
+<td>built-in general log and deliver via email</td>
+<td>watch events, records the states and store/deliver via email</td>
+</tr>
+<tr>
+<td>error handling</td>
+<td>stop process and alerting with email</td>
+<td>retries on <em>n</em> times, close unexpected popup box</td>
+</tr>
+<tr>
+<td>dynamic logic</td>
+<td>existed SO can`t be edit (no function)</td>
+<td>capable to determine new/existed SO and do action</td>
+</tr>
+<tr>
+<td>smarter object clone</td>
+<td>not implement</td>
+<td>implemented (<a href="https://docs.automationanywhere.com/bundle/enterprise-v11.3/page/enterprise/topics/aae-client/metabots/getting-started/aae-client-metabot-designer-overview.html">benefits</a>)</td>
+</tr>
+<tr>
+<td>processing speed</td>
+<td>reduced due to highly depended on <em>delay</em> and readiness state</td>
+<td>integration with database and scripting maximized the throughput</td>
+</tr>
+<tr>
+<td>presentable</td>
+<td>output content on plain-text</td>
+<td>output content presented with rich HTML email template</td>
+</tr>
+</tbody>
+</table><p>Generally, existed process flow was untouched and maintained.</p>
+<h2 id="visual-flow">Visual Flow</h2>
+<p><img src="https://i.ibb.co/YWQ0DKj/visual-flow.png" alt="v-flow"></p>
+<h1 id="getting-started">Getting Started</h1>
+<h2 id="skill-matrix">Skill Matrix</h2>
+<p><strong>The functionality of the Bot has been divided into set of skills.</strong></p>
+<p>Below is an overview of how the task bots and metabots map to these skills:</p>
+
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Task Files</th>
+<th>MetaBot Files</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A bot entry point and an interface for variables initialization</td>
+<td>D365-P3V2-Init.atmx</td>
+<td>No MetaBots</td>
+</tr>
+<tr>
+<td>An abstract interface that orchestrate the core logic</td>
+<td>D365-P3V2.atmx</td>
+<td>WebScrapper-D365.mbot</td>
+</tr>
+<tr>
+<td>An error handler</td>
+<td>D365-P3V2-Err.atmx</td>
+<td>No MetaBots</td>
+</tr>
+<tr>
+<td>Contained all ERP assets and logic</td>
+<td>N/A</td>
+<td>WebScrapper-D365.mbot</td>
+</tr>
+</tbody>
+</table><h2 id="installation-hierarchy">Installation Hierarchy</h2>
+<p>Below is the sample folder structure based on this repository and its <code>config.txt</code>.</p>
+<pre><code>&lt;AA Application Path&gt;
+│   README.md
+│   config.txt    
+│
+└───My Tasks
+│   └───SOC-V2
+|		└───assets
+|		└───Scripts
+│       │   D365-P3V2.atmx
+│       │   D365-P3V2-Err.atmx
+|		|	D365-P3V2-Init.atmx
+│   
+└───My MetaBots
+|   │   WebScrapper-D365.mbot
+|
+
+&lt;Any folder&gt;  
+│
+└───Input Folder
+│   └───main
+│   
+└───Log Folder
+│   └───Snapshot
+|   │   log-fail.txt
+|   │   log-success.txt
+|
+</code></pre>
+<table>
+	<tbody>
+		<tr>
+			<td>Folder Structure</td>
+			<td>Description</td>
+			<td>Config Map</td>
+		</tr>
+		<tr>
+			<td><h4>&lt;AA Application Path&gt;</h4></td>
+			<td>Location where AA files are stored on your machine</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><h4>My Tasks</h4></td>
+			<td>Default directory where Bot Files are saved.</td>
+			<td rowspan="2"><em>pathTaskBot</em></td>
+		</tr>
+		<tr>
+			<td><h4>SOC-V2</h4></td>
+			<td>Base folder contains files and folders needed for the bot execution.</td>
+		</tr>
+		<tr>
+			<td><h4>assets</h4></td>
+			<td>Contains static files that was used in bot.</td>
+			<td><em>pathAssets</em></td>
+		</tr>
+		<tr>
+			<td><h4>Scripts</h4></td>
+			<td>Contains client side active scripting that was used by bot execution.</td>
+			<td><em>"sc*" prefixes</em></td>
+		</tr>
+		<tr>
+			<td><h4>D365-P3V2.atmx</h4></td>
+			<td rowspan="3">Contains all the developed platform source code</td>
+			<td rowspan="3"></td>
+		</tr>
+		<tr>
+			<td><h4>D365-P3V2-Err.atmx</h4></td>
+		</tr>
+		<tr>
+			<td><h4>D365-P3V2-Init.atmx</h4></td>
+		</tr>
+		<tr>
+			<td><h4>My MetaBots</h4></td>
+			<td rowspan="2">Contains the Developed Metabots needed for the bot execution.</td>
+			<td rowspan="2"></td>
+		</tr>
+		<tr>
+			<td><h4>WebScrapper-D365.mbot</h4></td>
+		</tr>
+		<tr>
+			<td><h4>Input Folder</h4></td>
+			<td rowspan="2">Contains input files that the bot needs for execution of the use case.</td>
+			<td rowspan="2"><em>pathBase</em></td>
+		</tr>
+		<tr>
+			<td><h4>main</h4></td>
+		</tr>
+		<tr>
+			<td><h4>Log Folder</h4></td>
+			<td rowspan="4">Contains logs and snapshots of screens if something goes wrong with the bot during execution</td>
+			<td><em>pathLog</em></td>
+		</tr>
+		<tr>
+			<td><h4>Snapshot</h4></td>
+			<td><em>folderSnapshot</em></td>
+		</tr>
+		<tr>
+			<td><h4>log-fail.txt</h4></td>
+			<td><em>failLog</em></td>
+		</tr>
+		<tr>
+			<td><h4>log-success.txt</h4></td>
+			<td><em>successLog</em></td>
+		</tr>
+	</tbody>
+</table>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="setup">1. Setup</h3>
+<p>No additional setup is required.</p>
+<h3 id="configuration">2. Configuration</h3>
+<p>The bot required valid parameters to be parse down the sub-task before start execution. An exception will be triggered if incorrect value has been detected. Configuration file can be configured at:</p>
+<blockquote>
+<p><strong>AA Application Path</strong> &gt; config.txt</p>
+</blockquote>
+<p>Below is the how the configuration file looks:<br>
+<img src="https://i.ibb.co/9Y5Q0zS/Screenshot-2020-11-11-153007.png" alt="cfg"></p>
+<p>Below is a table that summaries what the variable name is, what it does, and an example of the input &amp; output:</p>
+
+<table>
+<thead>
+<tr>
+<th>Variable name</th>
+<th align="center">Type</th>
+<th align="center">Required</th>
+<th>Purpose</th>
+<th>Example input</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emailReceiver</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>A list of recipient emails for notification</td>
+<td><a href="mailto:abc@email.com">abc@email.com</a></td>
+</tr>
+<tr>
+<td>emailSender</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Sender email</td>
+<td><a href="mailto:alert@hartalega.com">alert@hartalega.com</a></td>
+</tr>
+<tr>
+<td>isValidateHeader</td>
+<td align="center">boolean</td>
+<td align="center">no</td>
+<td>A flag to allow bot re-validate SO header on “Edit” mode</td>
+<td>true</td>
+</tr>
+<tr>
+<td>maxHeaderTries</td>
+<td align="center">number</td>
+<td align="center">yes</td>
+<td>SO header retry indicator</td>
+<td>3</td>
+</tr>
+<tr>
+<td>maxLineTries</td>
+<td align="center">number</td>
+<td align="center">yes</td>
+<td>SO line retry indicator</td>
+<td>2</td>
+</tr>
+<tr>
+<td>maxCustInstrucTries</td>
+<td align="center">number</td>
+<td align="center">yes</td>
+<td>SO customer instruction retry indicator</td>
+<td>2</td>
+</tr>
+<tr>
+<td>dbEnvironment</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Database environment switch</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>dbConnection</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>MS-SQL connection string</td>
+<td><a href="https://www.connectionstrings.com/sql-server/">example</a></td>
+</tr>
+<tr>
+<td>failLog</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Failure logging filename</td>
+<td>log-fail.txt</td>
+</tr>
+<tr>
+<td>successLog</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Success logging filename</td>
+<td>log-success.txt</td>
+</tr>
+<tr>
+<td>folderBase</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Working folder name</td>
+<td>D365</td>
+</tr>
+<tr>
+<td>folderSnapshot</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Snapshot folder name</td>
+<td>Snapshot</td>
+</tr>
+<tr>
+<td>pathBase</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Working folder absolute path</td>
+<td>D:\AA-RPA\Auto SO Creation</td>
+</tr>
+<tr>
+<td>pathLog</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Log folder absolute path</td>
+<td>D:\Log</td>
+</tr>
+<tr>
+<td>pathAssets</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Bot`s assets folder relative path</td>
+<td>Automation Anywhere\My Tasks\SOC-V2\assets</td>
+</tr>
+<tr>
+<td>pathTaskBot</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Bot folder relative path</td>
+<td>Automation Anywhere\My Tasks\SOC-V2</td>
+</tr>
+<tr>
+<td>scArchive</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Archive script relative path</td>
+<td>Automation Anywhere\My Tasks\SOC-V2\Scripts\Archive.vbs</td>
+</tr>
+<tr>
+<td>scFileTransform</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>File converter script relative path</td>
+<td>Automation Anywhere\My Tasks\SOC-V2\Scripts\FileTransform.vbs</td>
+</tr>
+<tr>
+<td>scFileCount</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>File counter script relative path</td>
+<td>Automation Anywhere\My Tasks\SOC-V2\Scripts\FileCount.vbs</td>
+</tr>
+<tr>
+<td>scFlattenDate</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Date formatted relative path</td>
+<td>Automation Anywhere\My Tasks\SOC-V2\Scripts\FlattenDate.vbs</td>
+</tr>
+<tr>
+<td>scRowColorSelector</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>Email template script relative path</td>
+<td>Automation Anywhere\My Tasks\SOC-V2\Scripts\RowColorSelector.vbs</td>
+</tr>
+<tr>
+<td>scSOLineCount</td>
+<td align="center">text</td>
+<td align="center">yes</td>
+<td>SO line records counter script relative path</td>
+<td>Automation Anywhere\My Tasks\SOC-V2\Scripts\SOLineCount.vbs</td>
+</tr>
+<tr>
+<td>urlD365</td>
+<td align="center">url</td>
+<td align="center">yes</td>
+<td>Dynamic D365 url</td>
+<td><a href="https://ax.d365live.hartalega.com.my/namespaces/AXSF/">https://ax.d365live.hartalega.com.my/namespaces/AXSF/</a></td>
+</tr>
+<tr>
+<td>urlD365Auth</td>
+<td align="center">url</td>
+<td align="center">yes</td>
+<td>Dynamic D365 auth. gateway</td>
+<td><a href="https://adfs.hartalega.com.my/adfs/oauth2/authorize/">https://adfs.hartalega.com.my/adfs/oauth2/authorize/</a></td>
+</tr>
+</tbody>
+</table><h1 id="logs">Logs</h1>
+<p>In case of Success/Errors, Error Logs &amp; Screenshots are generated within <strong>Logs Folder</strong>.</p>
+<pre><code>&lt;Any folder&gt;  
+|
+└───Log Folder
+│   └───Snapshot
+|   │   log-fail.txt
+|   │   log-success.txt
+|
+</code></pre>
+<p>Success Log will contain the below information -</p>
+<ul>
+<li>Generated timestamp</li>
+<li>Success description</li>
+<li>Processed SO details</li>
+</ul>
+<p>Error Logs will contain the below information -</p>
+<ul>
+<li>Generated timestamp</li>
+<li>Error description</li>
+<li>Failed SO details</li>
+</ul>
+<p><strong>Example of Log Files:</strong><br>
+<img src="https://i.ibb.co/5Wgdv46/err.png" alt="err-fld"><br>
+<img src="https://i.ibb.co/my96M5r/ok.png" alt="ok"><br>
+<img src="https://i.ibb.co/m0256tq/xok.png" alt="xok"></p>
+<p><strong>Example of Screenshot Generated Error File (Snapshot)</strong><br>
+<img src="https://i.ibb.co/njWKwxb/snap.png" alt="snap"><br>
+<img src="https://i.ibb.co/pXSrWSB/error-111120201843.png" alt="snap"></p>
+<h1 id="troubleshooting">Troubleshooting</h1>
+<p>Migration folder structure mapping based on <code>config.txt</code></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Type</th>
+<th align="left">Previous version</th>
+<th align="left">Current version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Task bot</td>
+<td align="left"><code>Users\&lt;User&gt;\Documents\&lt;AA Application Path&gt;\Automation Anywhere\&lt;My Tasks&gt;\Publish\Part 3</code></td>
+<td align="left"><code>Users\&lt;User&gt;\Documents\&lt;AA Application Path&gt;\Automation Anywhere\&lt;My Tasks&gt;\SOC-V2</code></td>
+</tr>
+<tr>
+<td align="left">Metabot</td>
+<td align="left">N/A</td>
+<td align="left"><code>Users\&lt;User&gt;\Documents\&lt;AA Application Path&gt;\Automation Anywhere\&lt;My MetaBots&gt;</code></td>
+</tr>
+<tr>
+<td align="left">Working folder</td>
+<td align="left"><code>\\NGC-FILESERVER\AA-RPA\Auto SO Creation\D365</code></td>
+<td align="left"><code>&lt;Any folder&gt;\Input Folder\main</code></td>
+</tr>
+<tr>
+<td align="left">Log folder</td>
+<td align="left">N/A</td>
+<td align="left"><code>&lt;Any folder&gt;\Log Folder</code></td>
+</tr>
+</tbody>
+</table></div>
+</body>
+
+</html>
