@@ -18,7 +18,7 @@ SOC-V2 is a successor to the SO-Creation Part 3 Bot, introduced more effective a
 Generally, existed process flow was untouched and maintained.  
 
 ## Visual Flow
-![v-flow](https://i.ibb.co/YWQ0DKj/visual-flow.png)
+![v-flow](https://i.ibb.co/RvWQL04/visual-flow.png)
 
 # Getting Started
 ## Skill Matrix
