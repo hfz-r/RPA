@@ -1,9 +1,9 @@
-emailReceiver=hafiz.roslan@hartalega.com.my;fikri.ismail@hartalega.com.my;s.vivekaanan@hartalega.com.my;
+emailReceiver=zulhakim.majid@hartalega.com.my;fasihah.sanusi@hartalega.com.my;hafiz.roslan@hartalega.com.my;fikri.ismail@hartalega.com.my;s.vivekaanan@hartalega.com.my
 emailSender=alert@hartalega.com.my
-environment=LIVE
+environment=UAT
 closeOnFinish=false
 isValidateHeader=false
-maxHeaderTries=3
+maxHeaderTries=2
 maxLineTries=2
 maxCustInstrucTries=2
 dbConnection=Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=RPA_SOC;Data Source=HSD-SVR-0051-V
