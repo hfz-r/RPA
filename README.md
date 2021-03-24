@@ -1,7 +1,7 @@
 # Overview
 AP Automation currently was a prototype and may change in time to time. Check out the first proposal document to understand the underlying concept of this project. 
 
-[D365 AP Automation Analysis.docx](http://bj-tfs:8080/tfs/BIACollection/RPA/_git/SOC-V2?path=%2F&version=GBmaster&_a=readme)
+[D365 AP Automation Analysis.docx](http://bj-tfs:8080/tfs/BIACollection/RPA/_git/AP%20Automation?path=%2FD365%20AP%20Automation%20Analysis.docx&version=GBmaster)
 
 **AP Automation** introduced below features:
 - Single config file
