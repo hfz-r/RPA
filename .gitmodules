@@ -1,4 +1,4 @@
 [submodule "V2.2"]
 	path = V2.2
-	url = http://bj-tfs:8080/tfs/BIACollection/RPA/_git/SOC-V2.2
-	branch = master
+	url = https://github.com/hfz-r/RPA.git
+	branch = soc-v2.2
